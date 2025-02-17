@@ -12,3 +12,12 @@ def initialize():
   bob = User('bob', 'bob@mail.com', 'bobpass')
   print(bob)
   print('database intialized')
+
+@app.cli.command("get-user", help="Retrieves a User")
+@click.argument('username', default='bob')
+def get_user(username):
+  bob = User.query.filter_by(username=username).first()
+  if not bob:
+    print(f'{username} not found!')
+    return
+  print(bob)
