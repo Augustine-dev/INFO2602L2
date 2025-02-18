@@ -11,6 +11,8 @@ def initialize():
   db.create_all()
   bob = User('bob', 'bob@mail.com', 'bobpass')
   print(bob)
+  db.session.add(bob)
+  db.session.commit()
   print('database intialized')
 
 @app.cli.command("get-user", help="Retrieves a User")
@@ -21,3 +23,9 @@ def get_user(username):
     print(f'{username} not found!')
     return
   print(bob)
+
+@app.cli.command('get-users')
+def get_users():
+  # gets all objects of a model
+  users = User.query.all()
+  print(users)
