@@ -93,3 +93,19 @@ def add_task(username, text):
   bob.todos.append(new_todo)
   db.session.add(bob)
   db.session.commit()
+
+@click.argument('todo_id', default=1)
+@click.argument('username', default='bob')
+@app.cli.command('toggle-todo')
+def toggle_todo_command(todo_id, username):
+  user = User.query.filter_by(username=username).first()
+  if not user:
+    print(f'{username} not found!')
+    return
+
+  todo = Todo.query.filter_by(id=todo_id, user_id=user.id).first()
+  if not todo:
+    print(f'{username} has no todo id {todo_id}')
+
+  todo.toggle()
+  print(f'{todo.text} is {"done" if todo.done else "not done"}!')
